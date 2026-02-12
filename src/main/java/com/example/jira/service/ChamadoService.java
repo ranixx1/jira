@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.jira.enums.Escopo;
-import com.example.jira.enums.Role;
+import com.example.jira.enums.Tipo;
 import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
 import com.example.jira.model.Usuario;
@@ -22,11 +22,11 @@ public class ChamadoService {
         this.repository = repository;
     }
 
-    public Chamado criarChamado(Role role, Usuario usuario, String titulo, String descricao, Escopo escopo) {
+    public Chamado criarChamado(Tipo tipo, Usuario usuario, String titulo, String descricao, Escopo escopo) {
         LocalDateTime agora = LocalDateTime.now();
         Status statusInicial = Status.ABERTO;
 
-        Chamado novoChamado = new Chamado(role, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
+        Chamado novoChamado = new Chamado(tipo, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
         return repository.save(novoChamado);
     }
 
@@ -34,22 +34,18 @@ public class ChamadoService {
         Chamado chamado = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
 
-        if (chamado.getStatus() == Status.FECHADO) {
-            throw new IllegalArgumentException("O chamado já está fechado");
+        chamado.fechar();
 
-        }
-        chamado.setStatus(Status.FECHADO);
-        chamado.setHorario_atualizacao(LocalDateTime.now());
         return repository.save(chamado);
-
     }
 
+
     public String listarChamados() {
-        if (repository.findAll().isEmpty()) {
+        var chamados = repository.findAll();
+        if (chamados.isEmpty()) {
             return "Lista de chamados está vazia";
         }
-        return repository.findAll()
-                .stream()
+        return chamados.stream()
                 .map(Chamado::toString)
                 .collect(Collectors.joining("\n" + "=".repeat(30) + "\n"));
 
