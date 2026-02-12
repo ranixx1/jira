@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import com.example.jira.enums.Escopo;
 import com.example.jira.enums.Role;
 import com.example.jira.enums.Status;
@@ -11,6 +13,7 @@ import com.example.jira.model.Chamado;
 import com.example.jira.model.Usuario;
 import com.example.jira.repository.ChamadoRepository;
 
+@Service
 public class ChamadoService {
 
     private final ChamadoRepository repository;
