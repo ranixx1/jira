@@ -1,8 +1,7 @@
 package com.example.jira.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 import com.example.jira.enums.Escopo;
@@ -10,33 +9,44 @@ import com.example.jira.enums.Role;
 import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
 import com.example.jira.model.Usuario;
+import com.example.jira.repository.ChamadoRepository;
 
 public class ChamadoService {
-    private List<Chamado> chamados = new ArrayList<>();
 
-    public void criarChamado(Role role, Usuario usuario, String titulo, String descricao, Escopo escopo) {
+    private final ChamadoRepository repository;
+
+    public ChamadoService(ChamadoRepository repository) {
+        this.repository = repository;
+    }
+
+    public Chamado criarChamado(Role role, Usuario usuario, String titulo, String descricao, Escopo escopo) {
         LocalDateTime agora = LocalDateTime.now();
         Status statusInicial = Status.ABERTO;
 
         Chamado novoChamado = new Chamado(role, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
-        this.chamados.add(novoChamado);
-        System.out.println("Chamado aberto com sucesso!");
+        return repository.save(novoChamado);
     }
 
-    public void fecharChamado(Chamado chamado) {
+    public Chamado fecharChamado(Integer id) {
+        Chamado chamado = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+
         if (chamado.getStatus() == Status.FECHADO) {
             throw new IllegalArgumentException("O chamado já está fechado");
+
         }
         chamado.setStatus(Status.FECHADO);
-        chamado.setHorario_atualizacao(LocalDateTime.now()); // Atualiza e salva
-        System.out.println("Chamado #" + chamado.getId() + " fechado com sucesso!");
+        chamado.setHorario_atualizacao(LocalDateTime.now());
+        return repository.save(chamado);
+
     }
 
     public String listarChamados() {
-        if (chamados.isEmpty()) {
+        if (repository.findAll().isEmpty()) {
             return "Lista de chamados está vazia";
         }
-        return chamados.stream()
+        return repository.findAll()
+                .stream()
                 .map(Chamado::toString)
                 .collect(Collectors.joining("\n" + "=".repeat(30) + "\n"));
 
