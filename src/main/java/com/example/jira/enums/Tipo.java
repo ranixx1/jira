@@ -1,6 +1,6 @@
 package com.example.jira.enums;
 
-public enum Role {
+public enum Tipo {
     WITHDRAWL,
     DEPOSIT,
     MY_ACCOUNT,
