@@ -3,9 +3,11 @@ package com.example.jira.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -22,12 +24,15 @@ public class Comentario {
 
     private LocalDateTime dataHoraCriacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
     private Usuario autor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chamado_id")
     private Chamado chamado;
 
+    
     protected Comentario() {
     }
 
@@ -44,6 +49,9 @@ public class Comentario {
 
     public LocalDateTime getDataHoraCriacao() {
         return dataHoraCriacao;
+    }
+    public void setChamado(Chamado chamado){
+        this.chamado = chamado;
     }
 
     @Override
