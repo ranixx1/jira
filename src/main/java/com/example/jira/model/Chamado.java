@@ -7,7 +7,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.example.jira.enums.Escopo;
-import com.example.jira.enums.Role;
+import com.example.jira.enums.Tipo;
 import com.example.jira.enums.Status;
 
 import jakarta.persistence.CascadeType;
@@ -15,6 +15,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,16 +35,16 @@ public class Chamado {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "O tipo é obrigatório")
-    private Role role;
+    private Tipo tipo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @Column(name = "horario_abertura")
     private LocalDateTime horario_abertura;
 
-    @Column(name = "horario_atualização") // adicionar usúario que fez a ultima atualização
+    @Column(name = "horario_atualizacao") // adicionar usúario que fez a ultima atualização
     private LocalDateTime horario_atualizacao;
 
     @Enumerated(EnumType.STRING)
@@ -60,12 +61,12 @@ public class Chamado {
     @Enumerated(EnumType.STRING)
     private Escopo escopo;
 
-    @OneToMany(mappedBy = "chamado",cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Comentario>comentarios = new ArrayList<>();
+    @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    private List<Comentario> comentarios = new ArrayList<>();
 
-    public Chamado(Role role, Usuario usuario, LocalDateTime horario_abertura, LocalDateTime horario_atualizazao,
+    public Chamado(Tipo tipo, Usuario usuario, LocalDateTime horario_abertura, LocalDateTime horario_atualizazao,
             Status status, String titulo, String descricao, Escopo escopo) {
-        this.role = role;
+        this.tipo = tipo;
         this.usuario = usuario;
         this.horario_abertura = horario_abertura;
         this.horario_atualizacao = horario_atualizazao;
@@ -75,10 +76,20 @@ public class Chamado {
         this.escopo = escopo;
     }
 
-    public void adicionarComentario(Comentario comentario){
+    public void adicionarComentario(Comentario comentario) {
+        comentario.setChamado(this);
         this.comentarios.add(comentario);
         this.horario_atualizacao = LocalDateTime.now();
     }
+
+    public void fechar() {
+    if (this.status == Status.FECHADO) {
+        throw new IllegalStateException("Chamado já está fechado");
+    }
+
+    this.status = Status.FECHADO;
+    this.horario_atualizacao = LocalDateTime.now();
+}
 
     @Override
     public String toString() {
@@ -92,7 +103,7 @@ public class Chamado {
                 ├─ Abertura  : %s
                 └─ Descrição : %s
                 """.formatted(
-                this.role,
+                this.tipo,
                 this.usuario.getNome(),
                 this.titulo,
                 this.status,
