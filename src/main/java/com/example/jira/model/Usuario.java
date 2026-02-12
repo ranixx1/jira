@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 
 public class Usuario {
     @Id
@@ -28,9 +29,15 @@ public class Usuario {
     @NotNull(message = "Definir time é obrigatório")
     private Time time;
 
-    public Usuario(String nome, String matricula, Time time) {
+    @Column(name = "matricula", unique = true)
+    private String matricula;
+
+    public Usuario(String nome, Time time) {
         this.nome = nome;
         this.time = time;
     }
-
 }
+
+/*
+    matricula é gerada diretamente no Service
+*/
