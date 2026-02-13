@@ -15,6 +15,7 @@ import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
 import com.example.jira.service.ChamadoService;
 import com.example.jira.enums.Tipo;
+import com.example.jira.enums.Prioridade;
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,12 +58,28 @@ public class ChamadoController {
         return ResponseEntity.ok(chamadoService.listarChamadosPorTipo(tipo));
     }
 
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Chamado>> listarChamadoPorStatus(@PathVariable Status status) {
+        return ResponseEntity.ok(chamadoService.listarChamadoPorStatus(status));
+    }
+
+    @GetMapping("/prioridade/{prioridade")
+    public ResponseEntity<List<Chamado>> listarChamadosPorPrioridade(@PathVariable Prioridade prioridade) {
+        return ResponseEntity.ok(chamadoService.listarChamadosPorPrioridade(prioridade));
+    }
+
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<List<Chamado>> listarChamadosPorCriador(@PathVariable Integer usuarioId) {
+        return ResponseEntity.ok(chamadoService.listarPorCriador(usuarioId));
+    }
 }
 /*
  * List<Chamado> findByTipo(Tipo tipo); OK
- * List<Chamado> findByStatus(Status status);
- * List<Chamado> findByEscopo(Escopo escopo);
- * List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo);
- * List<Chamado> findByPrioridade(Prioridade prioridade);
+ * List<Chamado> findByStatus(Status status); OK
+ * List<Chamado> findByEscopo(Escopo escopo); NECESSÁRIO?
+ * List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo); NECESSÁRIO?
+ * List<Chamado> findByPrioridade(Prioridade prioridade); OK
+ * List<Chamado> findByUsuarioId(Integer usuarioId); OK
+ * 
  * 
  */
