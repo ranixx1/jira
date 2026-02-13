@@ -36,8 +36,8 @@ public class UsuarioService {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public Usuario buscarUsuarioPorCPF(String cpf) {
-        return repository.findByCPF(cpf).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public Usuario buscarUsuarioPorCpf(String cpf) {
+        return repository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public Usuario atualizarTimePorId(Integer id, Time NovoTime) {

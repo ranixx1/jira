@@ -11,7 +11,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer>{
     boolean existsByCpf(String cpf);
     Optional<Usuario>findByMatricula(String matricula);
     List<Usuario>findByTime(Time time); 
-    Optional<Usuario> findByCPF(String cpf);
+    Optional<Usuario> findByCpf(String cpf);
 }
 
 /*
