@@ -12,6 +12,7 @@ public interface ChamadoRepository extends JpaRepository<Chamado, Integer> {
     List<Chamado> findByStatus(Status status);
     List<Chamado> findByEscopo(Escopo escopo);
     List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo);
+    List<Chamado> findByPrioridade(Prioridade prioridade);
 
 }
 
