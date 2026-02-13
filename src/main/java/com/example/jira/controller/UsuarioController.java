@@ -28,7 +28,7 @@ public class UsuarioController {
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
 
         Usuario novoUsuario = usuarioService
-                .criarUsuario(usuario.getNome(), usuario.getTime());
+                .criarUsuario(usuario.getNome(), usuario.getCPF(), usuario.getTime());
 
         return ResponseEntity.status(201).body(novoUsuario);
     }
@@ -36,6 +36,11 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorId(id));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarUsuarioPorCPF(@PathVariable String CPF) {
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorCPF(CPF));
     }
 
     @PutMapping("/{id}/time")
