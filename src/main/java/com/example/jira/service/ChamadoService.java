@@ -1,6 +1,6 @@
 package com.example.jira.service;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -67,14 +67,20 @@ public class ChamadoService {
         return repository.save(chamado);
     }
 
-    public String listarChamados() {
+    public List<Chamado> listarChamados() {
         var chamados = repository.findAll();
         if (chamados.isEmpty()) {
-            return "Lista de chamados está vazia";
+            throw new RuntimeException("Lista de chamados está vazia");
         }
-        return chamados.stream()
-                .map(Chamado::toString)
-                .collect(Collectors.joining("\n" + "=".repeat(30) + "\n"));
+        return chamados;
 
+    }
+    
+    public List<Chamado> listarChamadosPorTipo(Tipo tipo){
+        var procura = repository.findByTipo(tipo);
+        if(procura.isEmpty()){
+            throw new RuntimeException("Nenhum chamado encontrado");
+        }
+        return procura;
     }
 }
