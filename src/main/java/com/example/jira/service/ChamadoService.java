@@ -43,6 +43,11 @@ public class ChamadoService {
         return repository.save(novoChamado);
     }
 
+    public Chamado buscarChamadoPorId(Integer id) {
+        Chamado chamado = repository.findById(id).orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+        return chamado;
+    }
+
     public Chamado fecharChamado(Integer id) {
         Chamado chamado = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
