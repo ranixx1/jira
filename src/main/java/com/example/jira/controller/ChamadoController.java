@@ -1,5 +1,7 @@
 package com.example.jira.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
 import com.example.jira.service.ChamadoService;
+import com.example.jira.enums.Tipo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,4 +46,23 @@ public class ChamadoController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<Chamado>> listarTodos() {
+        return ResponseEntity.ok(chamadoService.listarChamados());
+
+    }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<List<Chamado>> listarChamadosPorTipo(@PathVariable Tipo tipo) {
+        return ResponseEntity.ok(chamadoService.listarChamadosPorTipo(tipo));
+    }
+
 }
+/*
+ * List<Chamado> findByTipo(Tipo tipo); OK
+ * List<Chamado> findByStatus(Status status);
+ * List<Chamado> findByEscopo(Escopo escopo);
+ * List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo);
+ * List<Chamado> findByPrioridade(Prioridade prioridade);
+ * 
+ */
