@@ -17,9 +17,9 @@ public class UsuarioService {
         this.repository = repository;
     }
 
-    public Usuario criarUsuario(String nome, Time time) {
+    public Usuario criarUsuario(String nome,String CPF, Time time) {
 
-        Usuario usuario = new Usuario(nome, time);
+        Usuario usuario = new Usuario(nome, CPF, time);
 
         usuario = repository.save(usuario);
 
@@ -31,6 +31,10 @@ public class UsuarioService {
 
     public Usuario buscarUsuarioPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    public Usuario buscarUsuarioPorCPF(String CPF){
+        return repository.findByCPF(CPF).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public Usuario atualizarTimePorId(Integer id, Time NovoTime) {
