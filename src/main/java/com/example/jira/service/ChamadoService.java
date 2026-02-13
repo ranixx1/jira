@@ -75,12 +75,33 @@ public class ChamadoService {
         return chamados;
 
     }
-    
-    public List<Chamado> listarChamadosPorTipo(Tipo tipo){
+
+    public List<Chamado> listarChamadosPorTipo(Tipo tipo) {
         var procura = repository.findByTipo(tipo);
-        if(procura.isEmpty()){
+        if (procura.isEmpty()) {
             throw new RuntimeException("Nenhum chamado encontrado");
         }
         return procura;
     }
+
+    public List<Chamado> listarChamadoPorStatus(Status status) {
+        var procura = repository.findByStatus(status);
+        if (procura.isEmpty()) {
+            throw new RuntimeException("Nenhum chamado encontrado");
+        }
+        return procura;
+    }
+
+    public List<Chamado> listarChamadosPorPrioridade(Prioridade prioridade) {
+        var chamados = repository.findByPrioridade(prioridade);
+        if (chamados.isEmpty()) {
+            throw new RuntimeException("Nenhum chamado encontrado");
+        }
+        return chamados;
+    }
+
+    public List<Chamado> listarPorCriador(Integer usuarioId) {
+        return repository.findByUsuarioId(usuarioId);
+    }
+
 }
