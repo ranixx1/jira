@@ -8,9 +8,10 @@ import java.util.Optional;
 import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario,Integer>{
+    boolean existsByCpf(String cpf);
     Optional<Usuario>findByMatricula(String matricula);
     List<Usuario>findByTime(Time time); 
-    Optional<Usuario> findByCPF(String CPF);
+    Optional<Usuario> findByCPF(String cpf);
 }
 
 /*

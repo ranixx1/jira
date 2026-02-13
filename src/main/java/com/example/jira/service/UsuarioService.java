@@ -19,6 +19,9 @@ public class UsuarioService {
 
     public Usuario criarUsuario(String nome, String cpf, Time time) {
 
+        if (repository.existsByCpf(cpf)) {
+            throw new IllegalArgumentException("CPF já cadastrado no sistema");
+        }
         Usuario usuario = new Usuario(nome, cpf, time);
 
         usuario = repository.save(usuario);
