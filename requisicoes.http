@@ -1,43 +1,109 @@
-### CRIAR USUÁRIO
+### ==========================================
+### MÓDULO DE USUÁRIOS
+### ==========================================
+
+### 1. CRIAR USUÁRIO
+# Cria um novo usuário no sistema. 
+# Times disponíveis: PAYMENTS, RH, TI
 POST http://localhost:8081/usuarios
 Content-Type: application/json
 
 {
-  "nome": "User1",
-  "cpf": "70703907429",
+  "nome": "Ranilton",
+  "cpf": "70703807429",
+  "time": "TI"
+}
+
+###
+
+### 2. PESQUISAR USUÁRIO POR ID
+GET http://localhost:8081/usuarios/id/1
+
+###
+
+### 3. PESQUISAR USUÁRIO POR CPF
+GET http://localhost:8081/usuarios/cpf/70703907429
+
+###
+
+### 4. LISTAR TODOS OS USUÁRIOS
+GET http://localhost:8081/usuarios
+
+###
+
+### 5. LISTAR USUÁRIOS POR TIME
+# Opções: PAYMENTS, RH, TI
+GET http://localhost:8081/usuarios/time/TI
+
+###
+
+### 6. ATUALIZAR TIME DO USUÁRIO
+PUT http://localhost:8081/usuarios/1/time
+Content-Type: application/json
+
+{
   "time": "RH"
 }
 
 ###
 
-### PESQUISAR USUÁRIO POR ID
-GET http://localhost:8081/usuarios/id/1
+### ==========================================
+### MÓDULO DE CHAMADOS
+### ==========================================
 
-###
-
-### LISTAR TODOS OS USUÁRIOS
-GET http://localhost:8081/usuarios
-
-###
-
-### CRIAR CHAMADO
+### 7. CRIAR CHAMADO
+# Tipos: WITHDRAWL, DEPOSIT, MY_ACCOUNT, TECHINAL_ISSUES
+# Prioridades: BAIXA, NORMAL, ALTA
+# Escopos: TODOS, SOMENTE_EU
 POST http://localhost:8081/chamados
 Content-Type: application/json
 
 {
-  "tipo": "DEPOSIT",
-  "prioridade": "NORMAL",
+  "tipo": "TECHINAL_ISSUES",
+  "prioridade": "ALTA",
   "usuario": {
     "id": 1
   },
-  "titulo": "Erro no sistema",
-  "descricao": "Sistema caiu ao gerar relatório",
+  "titulo": "Erro no sistema de integração",
+  "descricao": "O sistema apresenta falha ao sincronizar dados com o banco H2",
   "escopo": "TODOS"
 }
 
 ###
 
-### ATUALIZAR STATUS
+### 8. LISTAR TODOS OS CHAMADOS
+GET http://localhost:8081/chamados
+
+###
+
+### 9. BUSCAR CHAMADO POR ID
+GET http://localhost:8081/chamados/id/1
+
+###
+
+### 10. FILTRAR CHAMADOS POR STATUS
+# Opções: ABERTO, EM_PROGRESSO, AGUARDANDO_USUARIO, FECHADO
+GET http://localhost:8081/chamados/status/ABERTO
+
+###
+
+### 11. FILTRAR CHAMADOS POR TIPO
+GET http://localhost:8081/chamados/tipo/TECHINAL_ISSUES
+
+###
+
+### 12. FILTRAR CHAMADOS POR PRIORIDADE
+GET http://localhost:8081/chamados/prioridade/ALTA
+
+###
+
+### 13. LISTAR CHAMADOS DE UM USUÁRIO ESPECÍFICO
+GET http://localhost:8081/chamados/usuario/1
+
+###
+
+### 14. ATUALIZAR STATUS (FECHAR CHAMADO / INATIVAR)
+# Envia o enum como uma String simples no corpo da requisição
 PUT http://localhost:8081/chamados/1/status
 Content-Type: application/json
 
