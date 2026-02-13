@@ -63,7 +63,7 @@ public class ChamadoController {
         return ResponseEntity.ok(chamadoService.listarChamadoPorStatus(status));
     }
 
-    @GetMapping("/prioridade/{prioridade")
+    @GetMapping("/prioridade/{prioridade}")
     public ResponseEntity<List<Chamado>> listarChamadosPorPrioridade(@PathVariable Prioridade prioridade) {
         return ResponseEntity.ok(chamadoService.listarChamadosPorPrioridade(prioridade));
     }
