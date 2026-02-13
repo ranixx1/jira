@@ -3,14 +3,21 @@ POST http://localhost:8081/usuarios
 Content-Type: application/json
 
 {
-  "nome": "{NOME}",
+  "nome": "User1",
+  "cpf": "70703407429",
   "time": "RH"
 }
 
 ###
 
 ### PESQUISAR USUÁRIO POR ID
-GET http://localhost:8081/usuarios/3
+GET http://localhost:8081/usuarios/id/1
+
+###
+
+
+### PESQUISAR USUÁRIO POR CPF
+GET http://localhost:8081/usuarios/cpf/70703407429
 
 ###
 
