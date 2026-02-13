@@ -28,7 +28,7 @@ public class UsuarioController {
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
 
         Usuario novoUsuario = usuarioService
-                .criarUsuario(usuario.getNome(), usuario.getCPF(), usuario.getTime());
+                .criarUsuario(usuario.getNome(), usuario.getCpf(), usuario.getTime());
 
         return ResponseEntity.status(201).body(novoUsuario);
     }
