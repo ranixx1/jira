@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import com.example.jira.enums.Escopo;
 import com.example.jira.enums.Tipo;
 import com.example.jira.enums.Status;
+import com.example.jira.enums.Prioridade;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -29,6 +30,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Chamado {
+
+    public Chamado() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -36,6 +41,9 @@ public class Chamado {
     @Enumerated(EnumType.STRING)
     @NotNull(message = "O tipo é obrigatório")
     private Tipo tipo;
+
+    @Enumerated(EnumType.STRING)
+    private Prioridade prioridade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
@@ -64,9 +72,11 @@ public class Chamado {
     @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Comentario> comentarios = new ArrayList<>();
 
-    public Chamado(Tipo tipo, Usuario usuario, LocalDateTime horario_abertura, LocalDateTime horario_atualizazao,
+    public Chamado(Tipo tipo, Prioridade prioridade, Usuario usuario, LocalDateTime horario_abertura,
+            LocalDateTime horario_atualizazao,
             Status status, String titulo, String descricao, Escopo escopo) {
         this.tipo = tipo;
+        this.prioridade = prioridade;
         this.usuario = usuario;
         this.horario_abertura = horario_abertura;
         this.horario_atualizacao = horario_atualizazao;
@@ -83,28 +93,30 @@ public class Chamado {
     }
 
     public void fechar() {
-    if (this.status == Status.FECHADO) {
-        throw new IllegalStateException("Chamado já está fechado");
-    }
+        if (this.status == Status.FECHADO) {
+            throw new IllegalStateException("Chamado já está fechado");
+        }
 
-    this.status = Status.FECHADO;
-    this.horario_atualizacao = LocalDateTime.now();
-}
+        this.status = Status.FECHADO;
+        this.horario_atualizacao = LocalDateTime.now();
+    }
 
     @Override
     public String toString() {
         return """
                 Chamado
-                ├─ Tipo      : %s
-                ├─ Usuário   : %s
-                ├─ Título    : %s
-                ├─ Status    : %s
-                ├─ Escopo    : %s
-                ├─ Abertura  : %s
-                └─ Descrição : %s
+                ├─ Tipo        : %s
+                ├─ Prioridade  : %s
+                ├─ Usuário     : %s
+                ├─ Título      : %s
+                ├─ Status      : %s
+                ├─ Escopo      : %s
+                ├─ Abertura    : %s
+                └─ Descrição   : %s
                 """.formatted(
                 this.tipo,
-                this.usuario.getNome(),
+                this.prioridade,
+                this.usuario != null ? this.usuario.getNome() : "N/A",
                 this.titulo,
                 this.status,
                 this.escopo,
