@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.jira.enums.Escopo;
+import com.example.jira.enums.Prioridade;
 import com.example.jira.enums.Tipo;
 import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
@@ -22,11 +23,11 @@ public class ChamadoService {
         this.repository = repository;
     }
 
-    public Chamado criarChamado(Tipo tipo, Usuario usuario, String titulo, String descricao, Escopo escopo) {
+    public Chamado criarChamado(Tipo tipo, Prioridade prioridade, Usuario usuario, String titulo, String descricao, Escopo escopo) {
         LocalDateTime agora = LocalDateTime.now();
         Status statusInicial = Status.ABERTO;
 
-        Chamado novoChamado = new Chamado(tipo, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
+        Chamado novoChamado = new Chamado(tipo,prioridade, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
         return repository.save(novoChamado);
     }
 
