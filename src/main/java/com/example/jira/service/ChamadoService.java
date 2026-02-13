@@ -1,7 +1,5 @@
 package com.example.jira.service;
 
-import java.time.LocalDateTime;
-
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -13,21 +11,35 @@ import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
 import com.example.jira.model.Usuario;
 import com.example.jira.repository.ChamadoRepository;
+import com.example.jira.repository.UsuarioRepository;
 
 @Service
 public class ChamadoService {
 
     private final ChamadoRepository repository;
+    private final UsuarioRepository usuarioRepository;
 
-    public ChamadoService(ChamadoRepository repository) {
+    public ChamadoService(ChamadoRepository repository, UsuarioRepository usuarioRepository) {
         this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
     }
 
-    public Chamado criarChamado(Tipo tipo, Prioridade prioridade, Usuario usuario, String titulo, String descricao, Escopo escopo) {
-        LocalDateTime agora = LocalDateTime.now();
+    public Chamado criarChamado(Tipo tipo, Prioridade prioridade, Usuario usuario, String titulo, String descricao,
+            Escopo escopo) {
+        Usuario usuarioExistente = usuarioRepository.findById(usuario.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
         Status statusInicial = Status.ABERTO;
 
-        Chamado novoChamado = new Chamado(tipo,prioridade, usuario, agora, agora, statusInicial, titulo, descricao, escopo);
+        Chamado novoChamado = new Chamado(
+                tipo,
+                prioridade,
+                usuarioExistente,
+                statusInicial,
+                titulo,
+                descricao,
+                escopo);
+
         return repository.save(novoChamado);
     }
 
@@ -40,6 +52,15 @@ public class ChamadoService {
         return repository.save(chamado);
     }
 
+    public Chamado alterarStatusChamado(Integer id, Status novoStatus) {
+
+        Chamado chamado = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+
+        chamado.alterarStatus(novoStatus);
+
+        return repository.save(chamado);
+    }
 
     public String listarChamados() {
         var chamados = repository.findAll();
