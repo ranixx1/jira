@@ -10,6 +10,7 @@ import java.util.List;
 public interface UsuarioRepository extends JpaRepository<Usuario,Integer>{
     Optional<Usuario>findByMatricula(String matricula);
     List<Usuario>findByTime(Time time); 
+    Optional<Usuario> findByCPF(String CPF);
 }
 
 /*
