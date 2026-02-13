@@ -17,24 +17,24 @@ public class UsuarioService {
         this.repository = repository;
     }
 
-    public Usuario criarUsuario(String nome,String CPF, Time time) {
+    public Usuario criarUsuario(String nome, String cpf, Time time) {
 
-        Usuario usuario = new Usuario(nome, CPF, time);
+        Usuario usuario = new Usuario(nome, cpf, time);
 
         usuario = repository.save(usuario);
 
         String identificacao = String.format("%04d", usuario.getId());
         usuario.setMatricula(nome + "." + identificacao);
 
-        return repository.save(usuario);
+        return repository.save(usuario); // salva matrícula
     }
 
     public Usuario buscarUsuarioPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public Usuario buscarUsuarioPorCPF(String CPF){
-        return repository.findByCPF(CPF).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    public Usuario buscarUsuarioPorCPF(String cpf) {
+        return repository.findByCPF(cpf).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public Usuario atualizarTimePorId(Integer id, Time NovoTime) {

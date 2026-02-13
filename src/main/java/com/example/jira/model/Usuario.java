@@ -10,7 +10,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -27,21 +30,29 @@ public class Usuario {
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 
-    @Column(name = "CPF", unique = true)
+    @Column(name = "cpf", unique = true)
     @NotNull(message = "CPF é obrigatório")
-    private String CPF;
+    private String cpf;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Definir time é obrigatório")
     private Time time;
 
+    @Column(updatable = false)
+    private LocalDateTime dataHoraCriacao;
+
     @Column(name = "matricula", unique = true)
     private String matricula;
 
-    public Usuario(String nome, String CPF, Time time) {
+    public Usuario(String nome, String cpf, Time time) {
         this.nome = nome;
-        this.CPF = CPF;
+        this.cpf = cpf;
         this.time = time;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.dataHoraCriacao = LocalDateTime.now();
     }
 }
 
