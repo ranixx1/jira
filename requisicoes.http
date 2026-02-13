@@ -1,0 +1,23 @@
+### CRIAR USUÁRIO
+POST http://localhost:8081/usuarios
+Content-Type: application/json
+
+{
+  "nome": "{NOME}",
+  "time": "RH"
+}
+
+###
+
+### PESQUISAR USUÁRIO POR ID
+GET http://localhost:8081/usuarios/3
+
+###
+
+### LISTAR TODOS OS USUÁRIOS
+GET http://localhost:8081/usuarios
+
+###
+
+### LISTAR USUÁRIOS POR TIME
+GET http://localhost:8081/usuarios/time/RH
