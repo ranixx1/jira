@@ -1,6 +1,7 @@
 package com.example.jira.model;
 
 import com.example.jira.enums.Time;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
 import jakarta.persistence.Column;
@@ -39,6 +40,7 @@ public class Usuario {
     private Time time;
 
     @Column(updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataHoraCriacao;
 
     @Column(name = "matricula", unique = true)
