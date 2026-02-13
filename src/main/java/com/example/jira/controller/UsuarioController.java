@@ -33,14 +33,14 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(novoUsuario);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorId(id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorCPF(@PathVariable String CPF) {
-        return ResponseEntity.ok(usuarioService.buscarUsuarioPorCPF(CPF));
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<Usuario> buscarUsuarioPorCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorCpf(cpf));
     }
 
     @PutMapping("/{id}/time")
