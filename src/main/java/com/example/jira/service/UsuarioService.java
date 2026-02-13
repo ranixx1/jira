@@ -41,11 +41,12 @@ public class UsuarioService {
     }
 
     public Usuario atualizarTimePorId(Integer id, Time NovoTime) {
-        Usuario usuario = repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        usuario.setTime(NovoTime);
-        return repository.save(usuario);
-
-    }
+    Usuario usuario = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    
+    usuario.setTime(NovoTime);
+    return repository.save(usuario);
+}
 
     public List<Usuario> listarUsuarios() {
         return repository.findAll();
