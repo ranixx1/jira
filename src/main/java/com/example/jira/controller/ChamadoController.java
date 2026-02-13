@@ -1,6 +1,7 @@
 package com.example.jira.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,12 +29,18 @@ public class ChamadoController {
         return ResponseEntity.status(201).body(novoChamado);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Chamado> buscarChamadoPorID(@PathVariable Integer id) {
+        return ResponseEntity.ok(chamadoService.buscarChamadoPorId(id));
+
+    }
+
     @PutMapping("/{id}/status")
-    public ResponseEntity<Chamado> alterarStatus(@PathVariable Integer id, @RequestBody Status novoStatus){
+    public ResponseEntity<Chamado> alterarStatus(@PathVariable Integer id, @RequestBody Status novoStatus) {
         Chamado StatusAtualizado = chamadoService.alterarStatusChamado(id, novoStatus);
 
         return ResponseEntity.ok(StatusAtualizado);
-    
+
     }
 
 }
