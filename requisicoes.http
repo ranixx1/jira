@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "nome": "User1",
-  "cpf": "70703407429",
+  "cpf": "70703907429",
   "time": "RH"
 }
 
@@ -15,16 +15,30 @@ GET http://localhost:8081/usuarios/id/1
 
 ###
 
-
-### PESQUISAR USUÁRIO POR CPF
-GET http://localhost:8081/usuarios/cpf/70703407429
-
-###
-
 ### LISTAR TODOS OS USUÁRIOS
 GET http://localhost:8081/usuarios
 
 ###
 
-### LISTAR USUÁRIOS POR TIME
-GET http://localhost:8081/usuarios/time/RH
+### CRIAR CHAMADO
+POST http://localhost:8081/chamados
+Content-Type: application/json
+
+{
+  "tipo": "DEPOSIT",
+  "prioridade": "NORMAL",
+  "usuario": {
+    "id": 1
+  },
+  "titulo": "Erro no sistema",
+  "descricao": "Sistema caiu ao gerar relatório",
+  "escopo": "TODOS"
+}
+
+###
+
+### ATUALIZAR STATUS
+PUT http://localhost:8081/chamados/1/status
+Content-Type: application/json
+
+"FECHADO"
