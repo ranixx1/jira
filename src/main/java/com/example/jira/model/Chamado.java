@@ -23,6 +23,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +36,7 @@ public class Chamado {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Enumerated(EnumType.STRING)
@@ -72,14 +73,11 @@ public class Chamado {
     @OneToMany(mappedBy = "chamado", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
     private List<Comentario> comentarios = new ArrayList<>();
 
-    public Chamado(Tipo tipo, Prioridade prioridade, Usuario usuario, LocalDateTime horario_abertura,
-            LocalDateTime horario_atualizazao,
+    public Chamado(Tipo tipo, Prioridade prioridade, Usuario usuario,
             Status status, String titulo, String descricao, Escopo escopo) {
         this.tipo = tipo;
         this.prioridade = prioridade;
         this.usuario = usuario;
-        this.horario_abertura = horario_abertura;
-        this.horario_atualizacao = horario_atualizazao;
         this.titulo = titulo;
         this.status = status;
         this.descricao = descricao;
@@ -98,6 +96,16 @@ public class Chamado {
         }
 
         this.status = Status.FECHADO;
+        this.horario_atualizacao = LocalDateTime.now();
+    }
+
+    public void alterarStatus(Status novoStatus) {
+        this.status = novoStatus;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.horario_abertura = LocalDateTime.now();
         this.horario_atualizacao = LocalDateTime.now();
     }
 
