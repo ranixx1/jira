@@ -27,6 +27,10 @@ public class Usuario {
     @NotNull(message = "Nome é obrigatório")
     private String nome;
 
+    @Column(name = "CPF", unique = true)
+    @NotNull(message = "CPF é obrigatório")
+    private String CPF;
+
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Definir time é obrigatório")
     private Time time;
@@ -34,12 +38,13 @@ public class Usuario {
     @Column(name = "matricula", unique = true)
     private String matricula;
 
-    public Usuario(String nome, Time time) {
+    public Usuario(String nome, String CPF, Time time) {
         this.nome = nome;
+        this.CPF = CPF;
         this.time = time;
     }
 }
 
 /*
-    matricula é gerada diretamente no Service
-*/
+ * matricula é gerada diretamente no Service
+ */
