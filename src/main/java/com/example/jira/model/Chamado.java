@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.example.jira.enums.Escopo;
 import com.example.jira.enums.Tipo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.example.jira.enums.Status;
 import com.example.jira.enums.Prioridade;
 
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Chamado {
 
     public Chamado() {
