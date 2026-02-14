@@ -2,6 +2,7 @@ package com.example.jira.model;
 
 import com.example.jira.enums.Time;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 import jakarta.persistence.Column;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class Usuario {
     @Id
