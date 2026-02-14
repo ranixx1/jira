@@ -3,6 +3,8 @@ package com.example.jira.service;
 import com.example.jira.model.Usuario;
 import com.example.jira.repository.UsuarioRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class UsuarioService {
     }
 
     public Usuario buscarUsuarioPorId(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
     }
 
     public Usuario buscarUsuarioPorCpf(String cpf) {
@@ -42,7 +44,7 @@ public class UsuarioService {
 
     public Usuario atualizarTimePorId(Integer id, Time NovoTime) {
     Usuario usuario = repository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
     
     usuario.setTime(NovoTime);
     return repository.save(usuario);
