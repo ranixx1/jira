@@ -2,6 +2,9 @@ package com.example.jira.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "comentario")
 public class Comentario {
 
@@ -24,10 +27,12 @@ public class Comentario {
 
     private LocalDateTime dataHoraCriacao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "autor_id")
     private Usuario autor;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chamado_id")
     private Chamado chamado;
@@ -43,6 +48,12 @@ public class Comentario {
         this.dataHoraCriacao = LocalDateTime.now();
     }
 
+    public Usuario getAutor(){
+        return autor;
+    }
+    public Integer getId(){
+        return id;
+    }
     public String getMensagem() {
         return mensagem;
     }
