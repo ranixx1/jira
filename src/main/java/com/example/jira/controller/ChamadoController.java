@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jira.enums.Status;
@@ -31,6 +32,19 @@ public class ChamadoController {
         Chamado novoChamado = chamadoService.criarChamado(chamado.getTipo(), chamado.getPrioridade(),
                 chamado.getUsuario(), chamado.getTitulo(), chamado.getDescricao(), chamado.getEscopo());
         return ResponseEntity.status(201).body(novoChamado);
+    }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<Chamado> postarComentario(
+            @PathVariable Integer id,
+            @RequestParam Integer autorId,
+            @RequestBody String mensagem) {
+
+        // Remove as aspas duplas extras que vêm do JSON bruto
+        String mensagemTratada = mensagem.replace("\"", "");
+
+        Chamado chamadoAtualizado = chamadoService.adicionarComentario(id, autorId, mensagemTratada);
+        return ResponseEntity.ok(chamadoAtualizado);
     }
 
     @GetMapping("/id/{id}")
@@ -68,7 +82,7 @@ public class ChamadoController {
         return ResponseEntity.ok(chamadoService.listarChamadosPorPrioridade(prioridade));
     }
 
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<Chamado>> listarChamadosPorCriador(@PathVariable Integer usuarioId) {
         return ResponseEntity.ok(chamadoService.listarPorCriador(usuarioId));
     }
@@ -77,7 +91,8 @@ public class ChamadoController {
  * List<Chamado> findByTipo(Tipo tipo); OK
  * List<Chamado> findByStatus(Status status); OK
  * List<Chamado> findByEscopo(Escopo escopo); NECESSÁRIO?
- * List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo); NECESSÁRIO?
+ * List<Chamado> findByStatusAndEscopo(Status status, Escopo escopo);
+ * NECESSÁRIO?
  * List<Chamado> findByPrioridade(Prioridade prioridade); OK
  * List<Chamado> findByUsuarioId(Integer usuarioId); OK
  * 
