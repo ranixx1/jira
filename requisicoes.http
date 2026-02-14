@@ -9,8 +9,8 @@ POST http://localhost:8081/usuarios
 Content-Type: application/json
 
 {
-  "nome": "Ranilton",
-  "cpf": "70703807429",
+  "nome": "André",
+  "cpf": "08703096489",
   "time": "TI"
 }
 
@@ -59,10 +59,10 @@ POST http://localhost:8081/chamados
 Content-Type: application/json
 
 {
-  "tipo": "TECHINAL_ISSUES",
-  "prioridade": "ALTA",
+  "tipo": "MY_ACCOUNT",
+  "prioridade": "BAIXA",
   "usuario": {
-    "id": 1
+    "id": 2
   },
   "titulo": "Erro no sistema de integração",
   "descricao": "O sistema apresenta falha ao sincronizar dados com o banco H2",
@@ -107,4 +107,12 @@ GET http://localhost:8081/chamados/usuario/1
 PUT http://localhost:8081/chamados/1/status
 Content-Type: application/json
 
-"FECHADO"
+"EM_PROGRESSO"
+
+### 15. ADICIONAR COMENTÁRIO
+# No 'id' da URL, coloque o ID do chamado (ex: 1)
+# No 'autorId', passe o ID do usuário que está comentando
+POST http://localhost:8081/chamados/1/comentarios?autorId=2
+Content-Type: application/json
+
+"Este é um comentário de teste para validar a atualização da hora."
