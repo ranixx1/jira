@@ -9,9 +9,12 @@ import com.example.jira.enums.Prioridade;
 import com.example.jira.enums.Tipo;
 import com.example.jira.enums.Status;
 import com.example.jira.model.Chamado;
+import com.example.jira.model.Comentario;
 import com.example.jira.model.Usuario;
 import com.example.jira.repository.ChamadoRepository;
 import com.example.jira.repository.UsuarioRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ChamadoService {
@@ -27,7 +30,7 @@ public class ChamadoService {
     public Chamado criarChamado(Tipo tipo, Prioridade prioridade, Usuario usuario, String titulo, String descricao,
             Escopo escopo) {
         Usuario usuarioExistente = usuarioRepository.findById(usuario.getId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
         Status statusInicial = Status.ABERTO;
 
@@ -44,13 +47,13 @@ public class ChamadoService {
     }
 
     public Chamado buscarChamadoPorId(Integer id) {
-        Chamado chamado = repository.findById(id).orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+        Chamado chamado = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Chamado não encontrado"));
         return chamado;
     }
 
     public Chamado fecharChamado(Integer id) {
         Chamado chamado = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Chamado não encontrado"));
 
         chamado.fechar();
 
@@ -60,10 +63,27 @@ public class ChamadoService {
     public Chamado alterarStatusChamado(Integer id, Status novoStatus) {
 
         Chamado chamado = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chamado não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Chamado não encontrado"));
 
         chamado.alterarStatus(novoStatus);
 
+        return repository.save(chamado);
+    }
+
+    public Chamado adicionarComentario(Integer chamadoId, Integer usuarioId, String mensagem) {
+        Chamado chamado = repository.findById(chamadoId)
+                .orElseThrow(() -> new EntityNotFoundException("Chamado não encontrado"));
+
+        if (chamado.getStatus() == Status.FECHADO) {
+            throw new IllegalStateException("Não é possível adicionar comentários a um chamado fechado.");
+        }
+
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+        Comentario novoComentario = new Comentario(mensagem, usuario, chamado);
+
+        chamado.adicionarComentario(novoComentario);
         return repository.save(chamado);
     }
 
@@ -77,31 +97,22 @@ public class ChamadoService {
     }
 
     public List<Chamado> listarChamadosPorTipo(Tipo tipo) {
-        var procura = repository.findByTipo(tipo);
-        if (procura.isEmpty()) {
-            throw new RuntimeException("Nenhum chamado encontrado");
-        }
-        return procura;
+        return repository.findByTipo(tipo);
     }
 
     public List<Chamado> listarChamadoPorStatus(Status status) {
-        var procura = repository.findByStatus(status);
-        if (procura.isEmpty()) {
-            throw new RuntimeException("Nenhum chamado encontrado");
-        }
-        return procura;
+
+        return repository.findByStatus(status);
     }
 
     public List<Chamado> listarChamadosPorPrioridade(Prioridade prioridade) {
-        var chamados = repository.findByPrioridade(prioridade);
-        if (chamados.isEmpty()) {
-            throw new RuntimeException("Nenhum chamado encontrado");
-        }
-        return chamados;
+        return repository.findByPrioridade(prioridade);
     }
 
-    public List<Chamado> listarPorCriador(Integer usuarioId) {
-        return repository.findByUsuarioId(usuarioId);
+public List<Chamado> listarPorCriador(Integer usuarioId) {
+    if (!usuarioRepository.existsById(usuarioId)) {
+        throw new EntityNotFoundException("Usuário não encontrado");
     }
-
+    return repository.findByUsuarioId(usuarioId);
+}
 }
