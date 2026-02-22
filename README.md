@@ -49,11 +49,11 @@ cd jira-reference
 
 Aplicação disponível em:
 
-http://localhost:8081
+http://localhost:8080
 
 Console H2:
 
-http://localhost:8081/h2-console
+http://localhost:8080/h2-console
 
 ------------------------------------------------------------------------
 
