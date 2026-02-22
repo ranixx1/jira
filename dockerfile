@@ -1,5 +1,5 @@
 # Use OpenJDK 17
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 # Cria diretório para o app
 WORKDIR /app
