@@ -199,7 +199,7 @@ model/
 
 ------------------------------------------------------------------------
 
-# 📈 Melhorias Futuras
+# 📈 Melhorias Futuras ( Boa parte já no jira2.0
 
 -   Spring Security
 -   JWT
